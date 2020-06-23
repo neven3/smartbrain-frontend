@@ -42,8 +42,18 @@ class App extends Component {
 
   calculateFaceLocation = (data) => {
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.querySelector('#inputImage')
+    const image = document.querySelector('#inputImage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      topRow: clarifaiFace.top_row * height,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+      leftCol: clarifaiFace.left_col * width,
+      rightCol: width - clarifaiFace.right_col * width,
+    };
   }
+
+  displayFacebox = box => this.setState({box});
 
   onInputChange = (event) => {
     this.setState({input: event.target.value});
@@ -55,7 +65,7 @@ class App extends Component {
       .predict(
         'c0c0ac362b03416da06ab3fa36fb58e3',
         this.state.input)
-      .then(response => this.calculateFaceLocation(response))
+      .then(response => this.displayFacebox(this.calculateFaceLocation(response)))
       .catch(err => console.log(err));
   }
   
@@ -70,7 +80,7 @@ class App extends Component {
           <Logo />
           <Rank />
           <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
-          <FaceRecognition imageURL={this.state.imageURL}/>
+          <FaceRecognition imageURL={this.state.imageURL} box={this.state.box}/>
       </div>
     );
   }
