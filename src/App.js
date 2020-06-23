@@ -1,26 +1,79 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Navigation from './Components/Navigation/Navigation';
+import Logo from './Components/Logo/Logo';
+import ImageLinkForm from './Components/ImageLinkForm/ImageLinkForm'
+import Rank from './Components/Rank/Rank';
+import Particles from 'react-particles-js';
+import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import Clarifai from 'clarifai';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const particlesOptions = {
+  particles: {
+    number: {
+      value: 30,
+      density: {
+        enable: true,
+        value_area: 500
+      }
+    },
+    line_linked: {
+      shadow: {
+        enable: true,
+        color: '#3CA9D1',
+      }
+    }
+  },
+};
+
+const app = new Clarifai.App({
+  apiKey: '6e58104673d1490e8d67f9da0f283cd3'
+});
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      input: '',
+      imageURL: '',
+      box: {},
+    };
+  }
+
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.querySelector('#inputImage')
+  }
+
+  onInputChange = (event) => {
+    this.setState({input: event.target.value});
+  }
+
+  onSubmit = () => {
+    this.setState({ imageURL: this.state.input });
+    app.models
+      .predict(
+        'c0c0ac362b03416da06ab3fa36fb58e3',
+        this.state.input)
+      .then(response => this.calculateFaceLocation(response))
+      .catch(err => console.log(err));
+  }
+  
+  render() {
+    return(
+      <div className = "App" >
+          <Particles
+            className='particles'
+            params={particlesOptions}
+          />
+          <Navigation />
+          <Logo />
+          <Rank />
+          <ImageLinkForm onInputChange={this.onInputChange} onSubmit={this.onSubmit}/>
+          <FaceRecognition imageURL={this.state.imageURL}/>
+      </div>
+    );
+  }
 }
 
 export default App;
