@@ -9,11 +9,12 @@ class SignIn extends Component {
         };
     }
 
-    onEmailChange = (event) => {
+    onEmailChange = event => {
+        // console.log(event);
         this.setState({signInEmail: event.target.value});
     }
 
-    onPasswordChange = (event) => {
+    onPasswordChange = event => {
         this.setState({signInPassword: event.target.value});
     }
 

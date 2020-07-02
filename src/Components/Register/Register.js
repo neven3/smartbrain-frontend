@@ -10,15 +10,15 @@ class Register extends Component {
         };
     }
 
-    onNameChange = (event) => {
+    onNameChange = event => {
         this.setState({signUpName: event.target.value});
     }
 
-    onEmailChange = (event) => {
+    onEmailChange = event => {
         this.setState({signUpEmail: event.target.value});
     }
 
-    onPasswordChange = (event) => {
+    onPasswordChange = event => {
         this.setState({signUpPassword: event.target.value});
     }
 

@@ -7,7 +7,6 @@ import Particles from 'react-particles-js';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import SignIn from './Components/SignIn/SignIn';
 import Register from './Components/Register/Register';
-import Clarifai from 'clarifai';
 import './App.css';
 
 const particlesOptions = {
@@ -27,10 +26,6 @@ const particlesOptions = {
     }
   },
 };
-
-const app = new Clarifai.App({
-  apiKey: '6e58104673d1490e8d67f9da0f283cd3'
-});
 
 const initialState = {
   input: '',
@@ -77,6 +72,7 @@ class App extends Component {
   }
 
   calculateFaceLocation = (data) => {
+    // const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
     const image = document.querySelector('#inputImage');
     const width = Number(image.width);
@@ -106,10 +102,14 @@ class App extends Component {
 
   onSubmit = () => {
     this.setState({ imageURL: this.state.input });
-    app.models
-      .predict(
-        'c0c0ac362b03416da06ab3fa36fb58e3',
-        this.state.input)
+    fetch('http://localhost:3000/imageurl', {
+        method: 'post',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+          input: this.state.input,
+        }),
+      })
+      .then(response => response.json())
       .then(response => {
         if (response) {
           fetch('http://localhost:3000/image', {
@@ -127,7 +127,7 @@ class App extends Component {
         }
         this.displayFacebox(this.calculateFaceLocation(response))
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log('kako', err));
   }
   
   render() {
