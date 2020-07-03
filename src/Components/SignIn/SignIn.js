@@ -10,7 +10,6 @@ class SignIn extends Component {
     }
 
     onEmailChange = event => {
-        // console.log(event);
         this.setState({signInEmail: event.target.value});
     }
 
@@ -19,7 +18,7 @@ class SignIn extends Component {
     }
 
     onSubmitSignIn = () => {
-        fetch('http://localhost:3000/signin', {
+        fetch('https://gentle-sea-09925.herokuapp.com/signin', {
             method: 'post',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
