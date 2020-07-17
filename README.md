@@ -1,3 +1,6 @@
+## How to use
+Register and paste a link to an image of a face and see if the app will able to draw a square around the face.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
