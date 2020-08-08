@@ -1,6 +1,14 @@
 ## How to use
 Register and paste a link to an image of a face and see if the app will able to draw a square around the face.
 
+If you don't feel like registering, use the following credentials to try out the app:
+Email: neven@neven.com
+Password: neven123
+
+
+Everything below is boilerplate Create React App text
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
